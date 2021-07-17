@@ -7,7 +7,7 @@ Art, Programing and Sound effects By Ashton Westrick
 
 Music By Jeff <InsertLastNameHere>
 
-Pixel Art made in Aseprite
+Pixel Art made in Aseprite,
 Sound Effects made with BFXR
 
 Contact Info: aawestrick@gmail.com
