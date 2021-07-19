@@ -8,15 +8,17 @@ public class PlayerController : MonoBehaviour
     private Transform tran;
     public int speed;
     private GameObject gun;
+    private Transform barrel;
     private Animator an;
     public float CoolTime;
     private float Cooldown = 0;
+    public GameObject bullet;
 
     private void LookAt2D(Vector3 target)
     {
         //Script Found here: https://www.youtube.com/watch?v=Geb_PnF1wOk
-        var dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
-        var Angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Vector3 dir = target - Camera.main.WorldToScreenPoint(transform.position);
+        float Angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         tran.rotation = Quaternion.AngleAxis(Angle, Vector3.forward);
     }
     private void move()
@@ -36,7 +38,9 @@ public class PlayerController : MonoBehaviour
         rb = this.gameObject.GetComponent<Rigidbody2D>();
         tran = this.gameObject.GetComponent<Transform>();
         gun = tran.GetChild(0).gameObject;
+        barrel = gun.GetComponent<Transform>().GetChild(0);
         an = this.gameObject.GetComponent<Animator>();
+        bullet = Resources.Load<GameObject>("Prefabs/Bullet");
     }
 
     // Update is called once per frame
@@ -46,8 +50,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && Cooldown >= CoolTime)
         {
             Cooldown = 0;
-            Debug.Log("Fired");
             gun.GetComponent<AudioSource>().Play();
+            Instantiate(bullet, barrel.position, tran.rotation);
             gun.GetComponent<Animator>().SetInteger("AnimState", 1);
 
         }
