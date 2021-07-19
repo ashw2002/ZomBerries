@@ -4,40 +4,53 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
-    private bool alive = true;
+    public int speed;
+    public bool alive = true;
     private Transform tr;
     private Rigidbody2D rb;
-    private Animator anim;
-    private AudioSource aud;
-    private GameObject blood;
+
+    public Transform[] patPoints;
+    public int curPoint;
+    private GameObject detectRadius;
+    private GameObject zombieBod;
+    public GameObject player;
     // Start is called before the first frame update
 
-    private void ZombMove()
-    {
 
+    private void ZombMove(Vector3 target)
+    {
+        Vector3 dir = target - tr.position;
+        float Angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        tr.rotation = Quaternion.AngleAxis(Angle, Vector3.forward);
+
+        float step = speed * Time.deltaTime;
+
+        tr.position = Vector2.MoveTowards(tr.position, target, step);
     }
     void Start()
     {
         tr = this.gameObject.GetComponent<Transform>();
         rb = this.gameObject.GetComponent<Rigidbody2D>();
-        anim = this.gameObject.GetComponent<Animator>();
-        aud = this.gameObject.GetComponent<AudioSource>();
-        blood = Resources.Load<GameObject>("Prefabs/BloodSplat");
+        detectRadius = this.gameObject.GetComponent<Transform>().GetChild(1).gameObject;
+        zombieBod = this.gameObject.GetComponent<Transform>().GetChild(0).gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("bullet"))
+        if (alive)
         {
-            anim.SetInteger("AnimState", 2);
-            Instantiate(blood, tr.position, tr.rotation);
-            aud.Play();
+            zombieBod.GetComponent<Animator>().SetInteger("AnimState", 1);
+            if(detectRadius.GetComponent<PADetection>().playerIn)
+            {
+                ZombMove(player.GetComponent<Transform>().position);
+            }
+            else
+            {
+                ZombMove(patPoints[curPoint].position);
+            }
         }
     }
+
+    
 }

@@ -19,6 +19,7 @@ public class PADetection : MonoBehaviour
         if (col.gameObject.CompareTag("Player"))
         {
             playerIn = false;
+            this.gameObject.GetComponent<Transform>().parent.gameObject.GetComponent<ZombieController>().alive = true;
         }
     }
 }
