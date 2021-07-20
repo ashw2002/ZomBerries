@@ -15,6 +15,6 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        tr.position = player.GetComponent<Transform>().position + new Vector3(0,0,-30);
+        tr.position = player.GetComponent<Transform>().position + new Vector3(0,0,-90);
     }
 }

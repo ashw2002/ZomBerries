@@ -25,12 +25,14 @@ public class PlayerController : MonoBehaviour
     {   if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
             rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed);
+            rb.angularVelocity = 0f;
             an.SetInteger("AnimState", 1);
         }
         else
         {
             an.SetInteger("AnimState", 0);
-            rb.velocity = new Vector3(0, 0,0);
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = 0f;
         }
         
     }
