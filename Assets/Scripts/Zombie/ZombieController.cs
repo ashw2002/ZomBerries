@@ -50,6 +50,13 @@ public class ZombieController : MonoBehaviour
                 ZombMove(patPoints[curPoint].position);
             }
         }
+        else
+        {
+            if (Vector3.Distance(tr.position, player.GetComponent<Transform>().position) > 15)
+            {
+                alive = true;
+            }
+        }
     }
 
     

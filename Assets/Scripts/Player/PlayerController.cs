@@ -24,13 +24,15 @@ public class PlayerController : MonoBehaviour
     private void move()
     {   if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
+            rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed);
             an.SetInteger("AnimState", 1);
         }
         else
         {
             an.SetInteger("AnimState", 0);
+            rb.velocity = new Vector3(0, 0,0);
         }
-        rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed);
+        
     }
     // Start is called before the first frame update
     void Start()

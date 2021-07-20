@@ -27,7 +27,6 @@ public class ZombieBodCont : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision);
         if (collision.CompareTag("bullet") && pare.GetComponent<ZombieController>().alive == true)
         {
             pare.GetComponent<ZombieController>().alive = false;
