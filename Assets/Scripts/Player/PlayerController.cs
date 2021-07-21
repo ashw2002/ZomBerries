@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,7 +13,11 @@ public class PlayerController : MonoBehaviour
     private Animator an;
     public float CoolTime;
     private float Cooldown = 0;
-    public GameObject bullet;
+    private GameObject bullet;
+    private int ammo = 5;
+    public Text ammoCount;
+    public int MaxDolls;
+    private int DollCount = 0;
 
     private void LookAt2D(Vector3 target)
     {
@@ -45,19 +50,21 @@ public class PlayerController : MonoBehaviour
         barrel = gun.GetComponent<Transform>().GetChild(0);
         an = this.gameObject.GetComponent<Animator>();
         bullet = Resources.Load<GameObject>("Prefabs/Bullet");
+        ammoCount.text = "Ammo: " + ammo;
     }
 
     // Update is called once per frame
     void Update()
     {
         gun.GetComponent<Animator>().SetInteger("AnimState", 0);
-        if (Input.GetButtonDown("Fire1") && Cooldown >= CoolTime)
+        if (Input.GetButtonDown("Fire1") && Cooldown >= CoolTime && ammo > 0)
         {
+            ammo -= 1;
             Cooldown = 0;
             gun.GetComponent<AudioSource>().Play();
             Instantiate(bullet, barrel.position, tran.rotation);
             gun.GetComponent<Animator>().SetInteger("AnimState", 1);
-
+            ammoCount.text = "Ammo: " + ammo;
         }
         else
         {
@@ -65,5 +72,18 @@ public class PlayerController : MonoBehaviour
         }
         move();
         LookAt2D(Input.mousePosition);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ammo"))
+        {
+            ammo += 1;
+            Destroy(other.gameObject);
+            ammoCount.text = "Ammo: " + ammo;
+        }else if (other.CompareTag("Doll")){
+            DollCount += 1;
+            Destroy(other.gameObject);
+        }
     }
 }

@@ -44,6 +44,10 @@ public class ZombieController : MonoBehaviour
             if(detectRadius.GetComponent<PADetection>().playerIn)
             {
                 ZombMove(player.GetComponent<Transform>().position);
+                if(Vector3.Distance(tr.position, player.GetComponent<Transform>().position) > 6)
+                {
+                    detectRadius.GetComponent<PADetection>().playerIn = false;
+                }
             }
             else
             {
