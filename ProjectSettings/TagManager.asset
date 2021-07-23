@@ -9,6 +9,7 @@ TagManager:
   - PatrolPoint
   - Ammo
   - Doll
+  - Lava
   layers:
   - Default
   - TransparentFX

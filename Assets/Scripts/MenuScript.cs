@@ -9,4 +9,12 @@ public class MenuScript : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene");
     }
+    public void OnQuit()
+    {
+        Application.Quit();
+    }
+    public void OnMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
 }
