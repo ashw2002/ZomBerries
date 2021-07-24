@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public float CoolTime;
     private float Cooldown = 0;
     private GameObject bullet;
-    private int ammo = 5;
+    private int ammo = 2;
     public Text ammoCount;
     public Text message;
     public int MaxDolls;
@@ -29,11 +29,32 @@ public class PlayerController : MonoBehaviour
     private float IframeCount = 0f;
     private bool bleedOut = false;
     private AudioSource HeartBeat;
-    
+    private bool deathPlayed = false;
+    public AudioClip step1;
+    public AudioClip step2;
+    private int StepNumber = 0;
+
+    private void controlSteps()
+    {
+        if (!AD.isPlaying && StepNumber == 0)
+        {
+            AD.clip = step1;
+            AD.volume = .5f;
+            AD.Play();
+            StepNumber = 1;
+        }else if (!AD.isPlaying && StepNumber == 1)
+        {
+            AD.clip = step2;
+            AD.volume = .5f;
+            AD.Play();
+            StepNumber = 0;
+        }
+    }
+
     private void fadeOut(string Scene)
     {
         Color tempcolor = redFadeout.color;
-        tempcolor.a += .01f;
+        tempcolor.a += .2f * Time.deltaTime;
         redFadeout.color = tempcolor;
         if (redFadeout.color.a >= 1f)
         {
@@ -50,6 +71,7 @@ public class PlayerController : MonoBehaviour
     private void move()
     {   if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
+            controlSteps();
             rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed);
             rb.angularVelocity = 0f;
             an.SetInteger("AnimState", 1);
@@ -81,6 +103,13 @@ public class PlayerController : MonoBehaviour
     {
         if(injury == 2)
         {
+            if (!deathPlayed)
+            {
+                AD.clip = Resources.Load<AudioClip>("SFX/Death");
+                AD.volume = .5f;
+                AD.Play();
+                deathPlayed = true;
+            }
             fadeOut("GameLoseScreen");
         }
         IframeCount += Time.deltaTime;
@@ -121,6 +150,7 @@ public class PlayerController : MonoBehaviour
                 gun.GetComponent<AudioSource>().Play();
                 Instantiate(bullet, barrel.position, tran.rotation);
                 gun.GetComponent<Animator>().SetInteger("AnimState", 1);
+
                 ammoCount.text = "Ammo: " + ammo;
             }
             else
@@ -143,13 +173,14 @@ public class PlayerController : MonoBehaviour
         }
         
     }
-
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Ammo"))
         {
             ammo += 1;
             AD.clip = Resources.Load<AudioClip>("SFX/AmmoPickup");
+            AD.volume = .75f;
             AD.Play();
             Destroy(other.gameObject);
             ammoCount.text = "Ammo: " + ammo;
