@@ -12,10 +12,13 @@ ScriptsOnlyBuild:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.IK.Editor.dll:
     - UnityEditor.U2D.IK.IKEditorManager
+    - UnityEditor.U2D.IK.IKGizmos
     Unity.2D.IK.Runtime.dll:
     - UnityEditor.U2D.IK.IKEditorManagerHelper
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridPaintingState
+    - UnityEditor.Tilemaps.GridPaletteBrushes
+    - UnityEditor.Tilemaps.GridPalettes
     - UnityEditor.Tilemaps.SceneViewGridManager
     - UnityEditor.Tilemaps.SceneViewOpenTilePaletteHelper
     - UnityEditor.Tilemaps.TileDragAndDropManager
@@ -25,8 +28,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     - UnityEditor.Graphs.ParameterControllerEditor
     UnityEditor.TestRunner.dll:
@@ -487,7 +492,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: 1654af92c91f582592022972022827d6
+      Hash: 7f3acc37c78553742715876a4a46f257
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerController
@@ -595,7 +600,7 @@ ScriptsOnlyBuild:
     className: SpriteShapeController
   - hash:
       serializedVersion: 2
-      Hash: 31fe1e0bdc8211dd98d029c48a4a1f93
+      Hash: ae5bcd5476cf4755fda131bc419dc42a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ZombieController
@@ -869,4 +874,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/GameScene.unity
   - Assets/Scenes/GameWinScreen.unity
   - Assets/Scenes/GameLoseScreen.unity
-  playerPath: C:/Users/ashto/Documents/ProjectZomberries/WinBuild/ProjectZomberries.exe
+  playerPath: C:/Users/ashto/Documents/ProjectZomberries/ProjectZomberries/ProjectZomberries.exe

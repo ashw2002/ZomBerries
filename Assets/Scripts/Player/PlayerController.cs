@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Transform tran;
-    public int speed;
+    public float speed;
     private GameObject gun;
     private Transform barrel;
     private Animator an;
@@ -33,20 +33,21 @@ public class PlayerController : MonoBehaviour
     public AudioClip step1;
     public AudioClip step2;
     private int StepNumber = 0;
+    public AudioClip[] Swells;
 
     private void controlSteps()
     {
-        if (!AD.isPlaying && StepNumber == 0)
+        if (!gun.GetComponent<AudioSource>().isPlaying && StepNumber == 0)
         {
-            AD.clip = step1;
-            AD.volume = .5f;
-            AD.Play();
+            gun.GetComponent<AudioSource>().clip = step1;
+            gun.GetComponent<AudioSource>().volume = .5f;
+            gun.GetComponent<AudioSource>().Play();
             StepNumber = 1;
-        }else if (!AD.isPlaying && StepNumber == 1)
+        }else if (!gun.GetComponent<AudioSource>().isPlaying && StepNumber == 1)
         {
-            AD.clip = step2;
-            AD.volume = .5f;
-            AD.Play();
+            gun.GetComponent<AudioSource>().clip = step2;
+            gun.GetComponent<AudioSource>().volume = .5f;
+            gun.GetComponent<AudioSource>().Play();
             StepNumber = 0;
         }
     }
@@ -147,6 +148,7 @@ public class PlayerController : MonoBehaviour
             {
                 ammo -= 1;
                 Cooldown = 0;
+                gun.GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("SFX/Shotgun3");
                 gun.GetComponent<AudioSource>().Play();
                 Instantiate(bullet, barrel.position, tran.rotation);
                 gun.GetComponent<Animator>().SetInteger("AnimState", 1);
@@ -165,6 +167,10 @@ public class PlayerController : MonoBehaviour
             if (textHideTime > 2 && DollCount < MaxDolls)
             {
                 message.text = "";
+            }
+            else if(textHideTime > 2 && DollCount >= MaxDolls)
+            {
+                message.text = "You have collected all that you need.  Return to the volcano and complete the ritual";
             }
             else
             {
@@ -190,6 +196,9 @@ public class PlayerController : MonoBehaviour
             textHideTime = 0;
             DollCount += 1;
             Destroy(other.gameObject);
+
+            AD.clip = Swells[Random.Range(0,4)];
+            AD.Play();
             injury = 0;
             Color tempColor = redFadeout.color;
             tempColor.a = 0;
@@ -217,12 +226,12 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.GetComponent<Transform>().parent.gameObject.tag);
-        if (collision.gameObject.GetComponent<Transform>().parent.gameObject.CompareTag("zombie") && IframeCount >= IframeTime)
+        if (collision.gameObject.GetComponent<Transform>().parent.gameObject.CompareTag("zombie") && IframeCount >= IframeTime && collision.gameObject.GetComponent<Transform>().parent.gameObject.GetComponent<ZombieController>().alive)
         {
             if (injury == 1)
             {
                 an.SetInteger("AnimState", 2);
+                
                 injury = 2;
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
                 gun.SetActive(false);
@@ -231,6 +240,8 @@ public class PlayerController : MonoBehaviour
             else if (injury == 0)
             {
                 injury = 1;
+                AD.clip = Resources.Load<AudioClip>("SFX/Hit_Hurt");
+                AD.Play();
                 IframeCount = 0;
             }
             Debug.Log(injury); 

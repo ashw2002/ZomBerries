@@ -14,8 +14,29 @@ public class ZombieController : MonoBehaviour
     private GameObject detectRadius;
     private GameObject zombieBod;
     public GameObject player;
-    // Start is called before the first frame update
+    private AudioSource AD;
+    public AudioClip step1;
+    public AudioClip step2;
+    private int StepNumber = 0;
 
+
+    private void controlSteps()
+    {
+        if (!AD.isPlaying && StepNumber == 0)
+        {
+            AD.clip = step1;
+            AD.volume = .5f;
+            AD.Play();
+            StepNumber = 1;
+        }
+        else if (!AD.isPlaying && StepNumber == 1)
+        {
+            AD.clip = step2;
+            AD.volume = .5f;
+            AD.Play();
+            StepNumber = 0;
+        }
+    }
 
     private void ZombMove(Vector3 target)
     {
@@ -33,6 +54,7 @@ public class ZombieController : MonoBehaviour
         rb = this.gameObject.GetComponent<Rigidbody2D>();
         detectRadius = this.gameObject.GetComponent<Transform>().GetChild(1).gameObject;
         zombieBod = this.gameObject.GetComponent<Transform>().GetChild(0).gameObject;
+        AD = this.gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -40,6 +62,7 @@ public class ZombieController : MonoBehaviour
     {
         if (alive)
         {
+            controlSteps();
             zombieBod.GetComponent<Animator>().SetInteger("AnimState", 1);
             if(detectRadius.GetComponent<PADetection>().playerIn)
             {
